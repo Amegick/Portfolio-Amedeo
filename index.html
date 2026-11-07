@@ -371,6 +371,14 @@ nav b{user-select:none;-webkit-user-select:none}
 .xv{display:contents}
 .xn button{padding:8px 16px;border:1px solid rgba(255,255,255,.3);font-size:13px;letter-spacing:.06em;white-space:nowrap;transition:.3s}
 .xn button:hover{background:#fff;color:#000}.xn button.on{background:var(--acc);border-color:var(--acc);color:#000}
+/* Contattami sulle pagine extra: stesso pannello del portfolio */
+.xcw{position:relative;display:inline-flex}
+#xcp{position:absolute;top:calc(100% + 10px);right:0;width:340px;max-width:90vw;padding:14px;border-radius:0;background:rgba(22,22,26,.96);border:1px solid var(--line);backdrop-filter:blur(14px);box-shadow:0 30px 60px -20px #000;opacity:0;transform:translateY(-10px) scale(.97);transform-origin:top right;pointer-events:none;transition:.35s cubic-bezier(.2,.8,.2,1);z-index:6;text-align:left;text-transform:none;letter-spacing:normal;color:#fff;font-family:'Space Grotesk',system-ui,sans-serif}
+#xcp.on{opacity:1;transform:none;pointer-events:auto}
+#xcp .cr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 6px}#xcp .cr+.cr{border-top:1px solid var(--line)}
+#xcp .cr small{display:block;color:var(--mute);font-size:12px}#xcp .cr span{font-size:15px;font-weight:400;word-break:break-all}
+#xcp .cr button{padding:6px 14px;border:0;border-radius:0;background:#fff;color:#000;font-size:13px;font-weight:600;letter-spacing:normal;min-width:76px}
+@media(max-width:760px){.xcw{position:static}#xcp{left:5vw;right:auto;width:90vw;top:calc(100% - 8px);transform-origin:top left}}
 .xb{max-width:1180px;margin:0 auto;padding:4vh 6vw 90px}
 .xk{font-family:var(--f1);letter-spacing:.3em;font-size:14px;color:var(--acc);text-transform:uppercase;margin-bottom:10px}
 .xt{font-family:var(--f2);font-weight:400;text-transform:uppercase;font-size:clamp(64px,17vw,210px);line-height:.95;letter-spacing:.01em;margin-bottom:4vh;overflow-wrap:anywhere}
@@ -566,7 +574,7 @@ background:repeating-conic-gradient(from 0deg,rgba(24,12,56,.9) 0,rgba(110,64,22
 <div id="dbg"></div><div id="dial"><div id="ring"></div><div id="ptr"></div><div id="marks"></div></div><div id="lab"></div>
 <svg id="iris"></svg>
 <div id="det"><button class="back" id="dback">← Torna ai video</button><div class="dg"></div></div>
-<div id="xp"><div class="xn"><b id="xnm">Amedeo Castellano Comba</b><span class="xv" id="xv"></span><button id="xcl">Copia link</button></div><div class="xb"></div></div>
+<div id="xp"><div class="xn"><b id="xnm">Amedeo Castellano Comba</b><span class="xv" id="xv"></span><span class="xcw"><button id="xcl">Contattami</button><div id="xcp"></div></span></div><div class="xb"></div></div>
 <div id="lb"><button class="back">Chiudi</button></div>
 <div id="adm"><button class="back" id="aback">Chiudi</button><div class="ac"></div></div>
 
@@ -933,7 +941,7 @@ return`<svg class="gbg" viewBox="0 0 1000 1400" preserveAspectRatio="xMidYMin sl
 function renderHub(){const L=exList().filter(p=>slug(p.n)!==xfrom).map(p=>({k:slug(p.n),n:p.n}));if(xfrom)L.unshift({k:'',n:'Portfolio'});if(!L.length)return false;xcur='altro';xp.dataset.t='hub';$('#xv').innerHTML='';$('#xcl').style.display='none';
 const B=$('.xb',xp);B.removeAttribute('data-n');B.innerHTML=`<div class="xk">Scegli</div><h1 class="xt">Altro di me</h1><div class="hbs">${L.map((p,i)=>`<button class="hb" data-x="${p.k}"><b>${String(i+1).padStart(2,'0')}</b><span>${esc(p.n)}</span><i>→</i></button>`).join('')}</div>`;
 $$('.hb',B).forEach(b=>b.onclick=()=>{const k=b.dataset.x;if(k)openXp(k);else{xfrom=null;closeXp()}});document.title='Altro di me · Amedeo Castellano Comba';return true}
-function renderXp(g){if(g==='altro')return renderHub();const L=exList(),p=L.find(q=>slug(q.n)===g);if(!p)return false;xcur=g;$('#xcl').style.display='';const T=p.type;xp.dataset.t=T=='bboy'?'graf':T=='dj'?'club':'std';$('#xv').innerHTML='';
+function renderXp(g){if(g==='altro')return renderHub();const L=exList(),p=L.find(q=>slug(q.n)===g);if(!p)return false;xcur=g;$('#xcl').style.display='';$('#xcp').classList.remove('on');$('#xcl').classList.remove('on');const T=p.type;xp.dataset.t=T=='bboy'?'graf':T=='dj'?'club':'std';$('#xv').innerHTML='';
 const B=$('.xb',xp),l=p.lead||{},lv=l.v||'',ld=!lv?'':l.k=='img'?`<img src="${esc(lv)}" alt="">`:l.k=='vf'?vfCard(lv):ytId(lv)?ytCard(ytId(lv),isV(lv)?'v':'h'):'',fc=(p.facts||[]).map(f=>`<li>${esc(f)}</li>`).join(''),
 more=true?'<div class="xmore"><button class="xmb" data-m><span>Altro di me</span><i>→</i></button></div>':'',
 hero=`<div class="xg${ld?' hl':''}"><div>${(p.desc||'').trim()?`<p class="xd">${esc(p.desc)}</p>`:''}${fc?`<ul class="bds">${fc}</ul>`:''}</div>${ld?`<div class="xlead gal">${ld}</div>`:''}</div>`;
@@ -953,7 +961,7 @@ function routeHash(){let h='';try{h=decodeURIComponent(location.hash.slice(1))}c
 if(h&&(h==='altro'?exList().length:exList().some(p=>slug(p.n)===h))){if(h!==xcur)openXp(h,false)}else if(xp.classList.contains('on'))closeXp(false)}
 addEventListener('popstate',routeHash);addEventListener('hashchange',routeHash);
 
-$('#xcl').onclick=async()=>{const u=location.href.split('#')[0]+'#'+xcur,b=$('#xcl');try{await navigator.clipboard.writeText(u)}catch(e){const t=document.createElement('textarea');t.value=u;document.body.append(t);t.select();document.execCommand('copy');t.remove()}b.textContent='Copiato ✓';setTimeout(()=>b.textContent='Copia link',1400)};
+{const xcl=$('#xcl'),xcp=$('#xcp');xcl.onclick=e=>{e.stopPropagation();const c=(typeof contact!=='undefined'&&contact)||{};xcp.innerHTML=[['Email',c.email],['Telefono',c.phone]].filter(r=>r[1]).map(r=>`<div class="cr"><div><small>${r[0]}</small><span>${esc(r[1])}</span></div><button data-c="${esc(r[1])}">Copia</button></div>`).join('')||'<div class="cr"><span>Nessun contatto disponibile</span></div>';$$('[data-c]',xcp).forEach(b=>b.onclick=async()=>{const v=b.dataset.c;try{await navigator.clipboard.writeText(v)}catch(e){const t=document.createElement('textarea');t.value=v;document.body.append(t);t.select();document.execCommand('copy');t.remove()}b.textContent='Copiato ✓';setTimeout(()=>b.textContent='Copia',1400)});xcp.classList.toggle('on');xcl.classList.toggle('on')};addEventListener('click',e=>{if(!xcp.contains(e.target)){xcp.classList.remove('on');xcl.classList.remove('on')}})}
 /* admin: descrizione + pagine extra */
 function menuX(){const L=$('#xl',AC);
 L.innerHTML=extras.map((p,i)=>`<div class="li${p.off?' off':''}"><div class="lc"><b>${esc(p.n||'(senza nome)')}</b>${p.off?'<span class="nt"> · disattivata: non compare sul sito</span>':exOk(p)?'':'<span class="nt"> · vuota: non compare sul sito</span>'}</div><button class="tg" data-xt="${i}">${p.off?'Attiva':'Disattiva'}</button><button data-xe="${i}">Modifica</button><button class="x" data-xd="${i}">✕</button></div>`).join('')||'<p class="nt">Nessuna pagina: finché non ne crei una con contenuti, sul sito non compare nulla.</p>';
